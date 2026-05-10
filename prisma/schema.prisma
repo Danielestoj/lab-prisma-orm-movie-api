@@ -8,6 +8,7 @@ datasource db {
 }
 
 model Usuario {
+<<<<<<< HEAD
   id           Int       @id @default(autoincrement())
   nombre       String    @db.VarChar(100)
   email        String    @unique @db.VarChar(150)
@@ -15,6 +16,16 @@ model Usuario {
   rol          String    @default("usuario") @db.VarChar(20)
   activo       Boolean?  @default(true)
   createdAt    DateTime? @default(now()) @map("created_at") @db.Timestamptz(6)
+=======
+  id           Int        @id @default(autoincrement())
+  nombre       String     @db.VarChar(100)
+  email        String     @unique @db.VarChar(150)
+  passwordHash String     @map("password_hash") @db.VarChar(255)
+  rol          String     @default("usuario") @db.VarChar(20)
+  activo       Boolean?   @default(true)
+  createdAt    DateTime?  @default(now()) @map("created_at") @db.Timestamptz(6)
+  favoritos    Favorito[]
+>>>>>>> a84ee4d0e194b62f354bacc6c0879f618676ee56
 
   @@map("usuarios")
 }
