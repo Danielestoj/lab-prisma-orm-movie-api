@@ -7,19 +7,19 @@ const {
   obtenerPelicula,
   crearPelicula,
   actualizarPelicula,
-  eliminarPelicula,
-  listarResenas,
-  crearResena
+  eliminarPelicula
+  //listarResenas,
+  //crearResena
 } = require('../controllers/peliculasPrismaController')
 
 // Rutas públicas
 router.get('/', listarPeliculas)
 router.get('/:id', obtenerPelicula)
-router.get('/:id/resenas', listarResenas)
+//router.get('/:id/resenas', listarResenas)
 
 // Rutas protegidas: cualquier usuario autenticado
 router.post('/', verificarToken, crearPelicula)
-router.post('/:id/resenas', verificarToken, crearResena)
+//router.post('/:id/resenas', verificarToken, crearResena)
 
 // Rutas protegidas: solo admin
 router.put('/:id', verificarToken, verificarRol('admin'), actualizarPelicula)

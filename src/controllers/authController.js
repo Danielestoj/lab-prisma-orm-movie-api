@@ -1,6 +1,6 @@
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken')
-const prisma = require('../config/prisma')
+const pool = require('../config/db')
 const AppError = require('../../utils/AppError')
 
 const SALT_ROUNDS = 10
@@ -12,6 +12,8 @@ const generarToken = (usuario) =>
     { expiresIn: process.env.JWT_EXPIRES_IN || '24h' }
   )
 
+
+// POST /api/auth/registro
 const registro = async (req, res, next) => {
   try {
     const { nombre, email, password, rol } = req.body
@@ -47,6 +49,7 @@ const registro = async (req, res, next) => {
   }
 }
 
+// POST /api/auth/login
 const login = async (req, res, next) => {
   try {
     const { email, password } = req.body
@@ -72,4 +75,22 @@ const login = async (req, res, next) => {
   }
 }
 
-module.exports = { registro, login }
+// GET /api/auth/perfil
+const perfil = async (req, res, next) => {
+  try {
+    const { rows } = await pool.query(
+      'SELECT id, nombre, email, rol, created_at FROM usuarios WHERE id = $1',
+      [req.usuario.id]
+    )
+
+    if (rows.length === 0) {
+      throw new AppError('Usuario no encontrado', 404)
+    }
+
+    res.json(rows[0])
+  } catch (err) {
+    next(err)
+  }
+}
+
+module.exports = { registro, login, perfil }
